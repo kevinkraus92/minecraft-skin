@@ -1,10 +1,10 @@
 var THREE
 
-module.exports = function(three, image, sizeRatio) {
-  return new Skin(three, image, sizeRatio)
+module.exports = function(three, image, sizeRatio, position) {
+  return new Skin(three, image, sizeRatio, position)
 }
 
-function Skin(three, image, opts) {
+function Skin(three, image, opts, position) {
   if (opts) opts.image = opts.image || image
   else opts = { image: image }
   if (typeof image === 'object' && !(image instanceof HTMLElement)) opts = image
@@ -17,7 +17,7 @@ function Skin(three, image, opts) {
 	this.charMaterialTrans = this.getMaterial(this.skin, true)
   if (typeof opts.image === "string") this.fetchImage(opts.image)
   if (opts.image instanceof HTMLElement) this.setImage(opts.image)
-  this.mesh = this.createPlayerObject()
+  this.mesh = this.createPlayerObject(position)
 }
 
 Skin.prototype.createCanvases = function() {
@@ -191,7 +191,7 @@ Skin.prototype.cubeFromPlanes = function (size, mat) {
 //body
 //head
 
-Skin.prototype.createPlayerObject = function(scene) {
+Skin.prototype.createPlayerObject = function(scene, position) {
   var headgroup = new THREE.Object3D();
   var upperbody = this.upperbody = new THREE.Object3D();
   
@@ -340,7 +340,7 @@ Skin.prototype.createPlayerObject = function(scene) {
   
   var playerRotation = new THREE.Object3D();
   playerRotation.rotation.y = Math.PI / 2
-  playerRotation.position.y = 12
+  playerRotation.position.y = position
   playerRotation.add(playerModel)
 
   var rotatedHead = new THREE.Object3D();
